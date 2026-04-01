@@ -1,0 +1,15 @@
+name: caiman-calcium
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy=1.26.4
+  - pandas=2.3.1
+  - scipy=1.15.2
+  - matplotlib=3.10.5
+  - tifffile=2024.12.12
+  - imageio=2.37.0
+  - pip
+  - pip:
+      - cellpose==4.0.6
+

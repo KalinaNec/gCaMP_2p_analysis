@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE / OS
+.idea/
+.DS_Store
+Thumbs.db
+
+# Raw and processed imaging data
+2024_08_22/
+2024_09_05/
+2025_02_03/
+2025_03_05_C/
+corrected/
+cellpose/
+activity/
+
+# Ad hoc packaging / temp
+paper_figures/.Rhistory
+*.zip
+
+# Keep curated examples if desired
+!paper_figures/*.gif
+!paper_figures/*.png
+
