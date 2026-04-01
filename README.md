@@ -1,13 +1,11 @@
-# calcium imaging roi + spike analysis
+# Calcium imaging roi + spike analysis
 
-Small pile of python scripts for calcium imaging work. The main use case here is:
+Python scripts for calcium imaging analysis. The main use case here is:
 - motion correction
 - ROI finding on GCaMP movies
 - trace extraction and event / spike counting
 - making a few labeled gifs for cells that are actually easy to see
-- pre/post stats, including control vs experimental comparison
-
-This repo is meant to go on github as code + a few examples. Raw data and bulky generated folders are ignored on purpose.
+- pre/post stats, including control vs experimental comparison.
 
 ## what is in here
 - `alignment.py`
@@ -37,15 +35,12 @@ Versions that were actually used here:
 - `tifffile==2024.12.12`
 - `imageio==2.37.0`
 
-If you already have a working `caiman` env, that is probably fine too, as long as the usual scientific stack is there.
 
 Why is the env called `caiman` when the repo uses Cellpose now:
 
-Because this thing has history. I started from CaImAn-based analysis, then tried Suite2p, then switched again and ended up with Cellpose plus custom downstream code here. So the env name stayed from the CaImAn phase. It is not some clean naming decision, just archaeology from months of trying to get ROI detection to behave on these GCaMP neuron recordings.
+Because this thing has history. I started from CaImAn based analysis, then tried Suite2p, then switched again and ended up with Cellpose plus downstream code here. So the env name stayed from the beginning with CaImAn.
 
-Realistically, ROI detection here was the worst part of the whole pipeline. Off-the-shelf stuff kept failing or half-working, and this repo is basically what came out after roughly half a year of forcing the analysis into something usable. The plan after this, if it still was not good enough, was to move to custom ML-based ROI detection for GCaMP neurons.
-
-## folder idea
+## dir idea
 Something like this is enough:
 
 ```text
@@ -87,29 +82,24 @@ python spikes.py --movie-dir ./corrected --mask-dir ./cellpose --out-dir ./activ
 python pre_post_stats.py --activity-dir ./activity --out-dir ./activity/pre_post_stats
 ```
 
-## important analysis rules
+## important for analysis
 - experiment:
   - this is for an optogenetic experiment
-  - mice had the hippocampus manipulated / recorded in an optogenetic setup
+  - mice had the hippocampus stimulated and retrosplenial cortex recorded in an optogenetic setup
   - GFP was only used as a marker of expression
   - CNO was given only to the experimental group, to activate the DREADD receptor
   - control mice did not receive CNO
-  - activity was recorded before stimulation / manipulation and in the stimulated or treatment condition
-  - in the folder / script language this ends up as `pre` vs `post`
-  - so `post` is the active manipulation condition here, not just some later recording
+  - activity was recorded before stimulation
+  - in the directory / script language this ends up as `pre` vs `post`
+  - so `post` is the manipulation condition
 - control cohort:
   - recordings under `2025_03_05_C`
 - main comparison:
   - mouse-level pre vs post
-- stuff excluded from stats:
-  - movie names containing `green`, `red`, `max`, `outside`, `gfp`, `reda`
-  - `_tmp_for_caiman` duplicates
-  - root-level ad hoc duplicates
 
 ## what the code does a bit differently
-- `spikes.py` does not dump gifs for everything, only a few per movie
+- `spikes.py` only generates a few gifs per movie
 - gif choice is biased toward cells that are larger, more visible, and spike hard enough to be worth looking at
-- roi labels on overlays are pushed outside the soma with leader lines
 - gif labels use arrows, not dots covering the neuron
 
 ## examples
@@ -140,5 +130,3 @@ See:
 ```text
 examples/EXAMPLES.md
 ```
-
-That has a small sample run too, not only the full pipeline.
