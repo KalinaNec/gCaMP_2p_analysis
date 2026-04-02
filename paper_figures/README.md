@@ -11,6 +11,13 @@
   - between-cohort permutation tests on pre-to-post deltas,
   - FDR correction across metrics.
 
+## Channel analysis add-on
+- Separate red/green channel analysis is now included from the corrected reference-channel images.
+- `green` is the GCaMP/expression channel, `red` is the opsin channel, and `merged` is the pixelwise sum of the two after robust rescaling.
+- These channel plots are descriptive structural/reference analyses, not spike/event analyses.
+- The current channel comparison used `30` mouse-level channel pairs in total: `20` experimental and `10` control.
+- The added `gcamp_ctrl` folder contributes to the channel analysis, but most of its calcium `pre/post` movies still had empty ROI masks and therefore did not materially expand the spike-based pre/post comparison.
+
 ## Main Statistical Interpretation
 - Across all matched pairs combined, there is no FDR-significant global pre/post effect when cohorts are pooled.
 - Within the experimental cohort, post recordings trend toward lower event burden, but the within-cohort paired effects do not survive FDR correction.
@@ -40,17 +47,39 @@
   - Same paired logic as above, but with cohorts pooled.
   - Use it descriptively, not as the main biological conclusion figure.
 
+## How To Read The Channel Plots
+- `channel_intensity_by_cohort.png`:
+  - Experimental and control mice are compared directly for green, red, and merged intensity/fraction metrics.
+  - The experimental group tends to sit a bit higher for several intensity measures, especially green and merged signal, but none of these effects survive FDR correction in the current sample.
+- `channel_overlap_by_cohort.png`:
+  - These panels ask whether green and red spatially overlap more in one cohort than the other.
+  - The overlap/correlation metrics trend slightly upward in experimental mice, but again none pass FDR correction, so this should be described as a trend rather than a supported group difference.
+- `channel_within_mouse.png`:
+  - Each line is one mouse, compared across green-only, red-only, and merged images.
+  - The merged channel is significantly higher than either green or red alone across intensity and area metrics, which is expected because the merged image is the sum of both channels.
+  - Green-only versus red-only is not convincingly different after correction, so there is no strong evidence here that one reference channel dominates the other overall.
+
+## Channel interpretation
+- The current channel analysis does not show an FDR-significant structural/reference-channel split between experimental and control mice.
+- The cleanest negative result is that neither green intensity, red intensity, nor green/red overlap survives correction at the between-cohort level.
+- In plain terms: the strong group difference in this dataset is still in calcium event dynamics, not in the static red/green channel reference images.
+- That matters because it argues against the pre/post spiking result being a trivial artifact of one group simply having dramatically brighter green or red reference-channel images overall.
+
 ## Recommended Figure Order
 1. `pre_post_deltas.png`
 2. `between_cohort_effects.png`
 3. `pre_post_by_cohort.png`
-4. `exp_M05pre_overlay.png` and `exp_M05post_overlay.png`
-5. `ctrl_M06pre_overlay.png` and `ctrl_M06post_overlay.png`
-6. `exp_M05pre_ROI011.gif`, `exp_M05post_ROI007.gif`, `ctrl_M06pre_ROI018.gif`, `ctrl_M06post_ROI037.gif`
+4. `channel_intensity_by_cohort.png`
+5. `channel_overlap_by_cohort.png`
+6. `channel_within_mouse.png`
+7. `exp_M05pre_overlay.png` and `exp_M05post_overlay.png`
+8. `ctrl_M06pre_overlay.png` and `ctrl_M06post_overlay.png`
+9. `exp_M05pre_ROI011.gif`, `exp_M05post_ROI007.gif`, `ctrl_M06pre_ROI018.gif`, `ctrl_M06post_ROI037.gif`
 
 ## Caveats
 - This is still a movie-level paired analysis, not a mixed-effects model with cells nested in mice.
 - Some channels are structural or reference channels and were correctly skipped because masks were empty.
+- The new `gcamp_ctrl` controls mostly contributed to the channel analysis rather than the spike analysis, because ROI detection on those calcium movies was often empty or near-empty with the current settings.
 - Temp-derived `_tmp_for_caiman` activity outputs were removed from the packaged dataset and excluded from the final statistics.
 - Some representative root-level files have very small ROI counts; they remain in the dataset, but they should be interpreted cautiously.
 
@@ -60,3 +89,6 @@
 - Compact between-cohort summary: `../activity/pre_post_stats/results_summary_between_cohorts.csv`
 - Compact within-cohort summary: `../activity/pre_post_stats/results_summary_within_cohorts.csv`
 - Movie-level metrics: `../activity/pre_post_stats/movie_metrics.csv`
+- Channel between-cohort table: `../activity/channel_stats/channel_between_cohorts.csv`
+- Channel overlap table: `../activity/channel_stats/channel_overlap_between_cohorts.csv`
+- Channel within-mouse tests: `../activity/channel_stats/channel_within_mouse_tests.csv`

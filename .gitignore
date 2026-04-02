@@ -14,6 +14,8 @@ Thumbs.db
 2024_09_05/
 2025_02_03/
 2025_03_05_C/
+2026_03_17/
+gcamp_ctrl/
 corrected/
 cellpose/
 activity/
@@ -25,4 +27,3 @@ paper_figures/.Rhistory
 # Keep curated examples if desired
 !paper_figures/*.gif
 !paper_figures/*.png
-

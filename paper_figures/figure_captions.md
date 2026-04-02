@@ -40,6 +40,21 @@ Files: `ctrl_M06pre_stacked_traces.png`, `ctrl_M06post_stacked_traces.png`, `ctr
 
 Representative control activity plots showing the same extraction pipeline applied to the control cohort.
 
+## Figure 9. Channel intensity by cohort
+File: `channel_intensity_by_cohort.png`
+
+Experimental and control mice are compared directly for green, red, and merged channel intensity/fraction metrics. Points show mouse-level measurements, violin shapes summarize the distributions, and significance bars report permutation-test FDR-adjusted between-cohort results. In the current dataset these channel-intensity differences trend upward in the experimental group but do not survive FDR correction.
+
+## Figure 10. Green/red overlap by cohort
+File: `channel_overlap_by_cohort.png`
+
+Between-cohort comparison of green/red overlap, overlap fractions, and pixelwise green-red correlation. These panels test whether the spatial relationship between the GCaMP/expression channel and the opsin channel differs by cohort. None of the overlap metrics cross the FDR threshold in the current sample.
+
+## Figure 11. Within-mouse channel comparison
+File: `channel_within_mouse.png`
+
+Within each mouse, green-only, red-only, and merged channel images are compared directly. Brackets show FDR-adjusted paired permutation-test significance for the three pairwise comparisons. The merged image is consistently higher than either single channel, which is expected from summing the channels, while green-only versus red-only differences are not compelling after correction.
+
 ## Supplementary GIFs
 Files: `exp_M05pre_ROI011.gif`, `exp_M05post_ROI007.gif`, `ctrl_M06pre_ROI018.gif`, `ctrl_M06post_ROI037.gif`
 

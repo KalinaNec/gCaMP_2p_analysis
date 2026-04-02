@@ -14,6 +14,23 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
+def detect_stage(name):
+    lower = name.lower()
+    if "pre" in lower:
+        return "pre"
+    if "post" in lower:
+        return "post"
+    return None
+
+
+def is_primary_calcium_movie(path):
+    name = os.path.basename(path).lower()
+    if detect_stage(name) is None:
+        return False
+    excluded_tokens = ["green", "red", "max", "outside", "gfp", "opsin"]
+    return not any(token in name for token in excluded_tokens)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Detect GCaMP somatic ROIs from motion-corrected TIFF movies."
@@ -30,6 +47,7 @@ def parse_args():
     parser.add_argument("--min-solidity", type=float, default=0.7)
     parser.add_argument("--max-eccentricity", type=float, default=0.97)
     parser.add_argument("--projection", choices=("mean", "median", "max"), default="mean")
+    parser.add_argument("--include-reference", action="store_true")
     parser.add_argument("--skip-existing", action="store_true")
     return parser.parse_args()
 
@@ -38,7 +56,7 @@ def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
 
 
-def find_movies(input_dir, output_dir):
+def find_movies(input_dir, output_dir, include_reference=False):
     patterns = [
         os.path.join(input_dir, "**", "*_rigid.tif"),
         os.path.join(input_dir, "**", "*_rigid.TIF"),
@@ -54,6 +72,7 @@ def find_movies(input_dir, output_dir):
         for path in unique
         if os.path.commonpath([os.path.abspath(path), out_abs]) != out_abs
         and f"{os.sep}_tmp_for_caiman{os.sep}" not in os.path.abspath(path)
+        and (include_reference or is_primary_calcium_movie(path))
     ]
 
 
@@ -216,7 +235,7 @@ def main():
 
     model = models.CellposeModel(model_type=args.model_type, gpu=args.gpu)
     input_abs = os.path.abspath(args.input_dir)
-    movie_paths = find_movies(args.input_dir, args.output_dir)
+    movie_paths = find_movies(args.input_dir, args.output_dir, include_reference=args.include_reference)
 
     if not movie_paths:
         print("No motion-corrected movies found.")

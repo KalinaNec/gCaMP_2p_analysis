@@ -17,7 +17,7 @@ BORDER_NAN = "copy"
 SKIP_EXISTING = True
 
 ONLY_PREPOST = True
-Z_STRATEGY = "first"
+Z_STRATEGY = "max"
 
 
 def ensure_dir(p):
@@ -26,7 +26,7 @@ def ensure_dir(p):
 
 def is_prepost(path: str) -> bool:
     name = os.path.basename(path).lower()
-    return bool(re.search(r"(pre|post)\.(tif|tiff|czi)$", name))
+    return bool(re.search(r"(pre|post|green|red)\.(tif|tiff|czi)$", name))
 
 
 def find_inputs_recursive(root: str):

@@ -15,6 +15,24 @@ from skimage import measure, morphology, segmentation
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+
+def detect_stage(name):
+    lower = name.lower()
+    if "pre" in lower:
+        return "pre"
+    if "post" in lower:
+        return "post"
+    return None
+
+
+def is_spike_movie(path):
+    name = os.path.basename(path).lower()
+    if detect_stage(name) is None:
+        return False
+    excluded_tokens = ["green", "red", "max", "outside", "gfp", "opsin"]
+    return not any(token in name for token in excluded_tokens)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Extract GCaMP traces, detect events, and render GIFs for a few large high-spiking cells."
@@ -79,6 +97,8 @@ def discover_movies(movie_dir, mask_dir, out_dir):
         if os.path.commonpath([path_abs, mask_abs]) == mask_abs:
             continue
         if f"{os.sep}_tmp_for_caiman{os.sep}" in path_abs:
+            continue
+        if not is_spike_movie(path):
             continue
         kept.append((path, os.path.relpath(path, start=movie_abs)))
     return kept

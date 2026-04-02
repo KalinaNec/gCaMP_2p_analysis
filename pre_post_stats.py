@@ -103,7 +103,13 @@ def normalize_subject_key(rel_dir, movie_name):
 
 def detect_cohort(group_dir):
     group_dir = (group_dir or "").replace("\\", "/")
-    if group_dir.endswith("_C") or group_dir == "2025_03_05_C" or "/2025_03_05_C" in f"/{group_dir}":
+    if (
+        group_dir.endswith("_C")
+        or group_dir == "2025_03_05_C"
+        or "/2025_03_05_C" in f"/{group_dir}"
+        or group_dir == "gcamp_ctrl"
+        or "/gcamp_ctrl" in f"/{group_dir}"
+    ):
         return "control"
     return "experimental"
 
